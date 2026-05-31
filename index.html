@@ -6,13 +6,13 @@
   <title>Hui Guo — Academic Homepage</title>
 
   <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCTG6L22RE"></script>
-    <script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCTG6L22RE"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-ZCTG6L22RE');
-    </script>
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Hui Guo — Academic Homepage" />
@@ -24,8 +24,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
   <style>
     :root {
       --serif: 'EB Garamond', Georgia, serif;
@@ -37,7 +38,12 @@
       --accent: #2a5298;
       --bg: #fafaf8;
       --card: #ffffff;
+
+      /* ── Change this one value to scale all text ── */
+      --base: 16px;
     }
+
+    html { font-size: var(--base); }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,7 +51,7 @@
       font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      font-size: 15px;
+      font-size: 1rem;
       line-height: 1.7;
     }
 
@@ -53,7 +59,7 @@
     a:hover { text-decoration: underline; }
 
     .container {
-      max-width: 760px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0 2rem;
     }
@@ -69,7 +75,7 @@
     }
 
     nav .inner {
-      max-width: 760px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0 2rem;
       display: flex;
@@ -79,7 +85,7 @@
 
     .nav-name {
       font-family: var(--serif);
-      font-size: 17px;
+      font-size: 1.06rem;
       color: var(--text);
     }
 
@@ -90,7 +96,7 @@
     }
 
     .nav-links a {
-      font-size: 13px;
+      font-size: 0.875rem;
       color: var(--muted);
       letter-spacing: 0.03em;
     }
@@ -108,20 +114,20 @@
 
     .hero-info h1 {
       font-family: var(--serif);
-      font-size: 28px;
+      font-size: 1.75rem;
       font-weight: 400;
       line-height: 1.2;
       margin-bottom: 6px;
     }
 
     .hero-info .position {
-      font-size: 14px;
+      font-size: 0.875rem;
       color: var(--muted);
       margin-bottom: 16px;
     }
 
     .hero-contact {
-      font-size: 13.5px;
+      font-size: 0.9rem;
       color: var(--muted);
       line-height: 2;
     }
@@ -137,7 +143,7 @@
     }
 
     .contact-links a {
-      font-size: 12px;
+      font-size: 0.8rem;
       padding: 4px 12px;
       border: 1px solid var(--border);
       border-radius: 20px;
@@ -153,28 +159,26 @@
 
     /* ── Sections ── */
     section {
-      padding: 3.2rem 0;
+      padding: 2rem 0;
       border-bottom: 1px solid rgba(42,82,152,0.11);
     }
 
     section:last-child { border-bottom: none; }
 
     .section-label {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--light);
-  margin-bottom: 1.5rem;
-}
-
-
+      font-size: 0.81rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 1.5rem;
+    }
 
     .bio {
-      font-size: 14.5px;
+      font-size: 0.97rem;
       color: var(--text);
       line-height: 1.75;
-      max-width: 620px;
+      max-width: 720px;
     }
 
     /* ── Interests ── */
@@ -185,7 +189,7 @@
     }
 
     .tag {
-      font-size: 13px;
+      font-size: 0.875rem;
       padding: 5px 14px;
       background: var(--card);
       border: 1px solid var(--border);
@@ -197,31 +201,42 @@
     .pub-list { list-style: none; }
 
     .pub {
-      padding: 1.1rem 0;
-      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0 0.5rem 0.8rem;
+      position: relative;
+    }
+
+    .pub::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 1.7rem;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 1px;
     }
 
     .pub:last-child { border-bottom: none; }
 
     .pub-title {
       font-family: var(--serif);
-      font-size: 16px;
+      font-size: 1.06rem;
       color: var(--text);
       margin-bottom: 4px;
       line-height: 1.4;
     }
 
     .pub-authors {
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 0.875rem;
+      color: var(--text);
       margin-bottom: 3px;
     }
 
-    .pub-authors strong { color: var(--text); font-weight: 500; }
+    .pub-authors strong { color: var(--text); font-weight: 700; }
 
     .pub-venue {
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 0.875rem;
+      color: var(--text);
       font-style: italic;
     }
 
@@ -229,7 +244,7 @@
 
     .badge {
       display: inline-block;
-      font-size: 10.5px;
+      font-size: 0.66rem;
       padding: 2px 8px;
       border-radius: 3px;
       background: #e8edf7;
@@ -245,43 +260,62 @@
     .pub-links {
       margin-top: 7px;
       display: flex;
-      gap: 12px;
+      gap: 8px;
     }
 
     .pub-links a {
-      font-size: 12px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      padding: 2px 8px;
       line-height: 1.2;
+      transition: background 0.15s, color 0.15s;
     }
 
-    .pub-links a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+    .pub-links a:hover {
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+    }
 
     /* ── Talks ── */
     .talk-list { list-style: none; }
 
     .talk {
-    padding: 0.9rem 0;
-    border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0 0.5rem 0.8rem;
+      position: relative;
+    }
+
+    .talk::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 1.7rem;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 1px;
     }
 
     .talk:last-child { border-bottom: none; }
 
     .talk-title {
-    font-size: 14.5px;
-    color: var(--text);
-    margin-bottom: 3px;
-    line-height: 1.4;
+      font-family: var(--serif);
+      font-size: 1.06rem;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.4;
     }
 
     .talk-meta {
-    font-size: 13px;
-    color: var(--muted);
+      font-size: 0.875rem;
+      color: var(--muted);
     }
 
-    /* ── Beyond / Hobbies ── */
+    /* ── Beyond ── */
     .beyond-intro {
-      font-size: 14.5px;
+      font-size: 0.97rem;
       color: var(--text);
       line-height: 1.75;
       margin-bottom: 1.5rem;
@@ -316,24 +350,10 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       padding: 6px 10px;
-      font-size: 11px;
+      font-size: 0.69rem;
       color: #fff;
       background: linear-gradient(transparent, rgba(0,0,0,0.45));
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    .photo-item .caption { opacity: 1; }
-
-    .photo-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: var(--light);
-      font-family: var(--sans);
+      opacity: 1;
     }
 
     .hobbies-list {
@@ -344,7 +364,7 @@
     }
 
     .hobby-tag {
-      font-size: 13px;
+      font-size: 0.875rem;
       padding: 5px 14px;
       background: var(--card);
       border: 1px solid var(--border);
@@ -356,7 +376,7 @@
     footer {
       text-align: center;
       padding: 2rem;
-      font-size: 12px;
+      font-size: 0.75rem;
       color: var(--light);
     }
 
@@ -393,27 +413,18 @@
     <div class="hero-info">
       <h1>Hui Guo</h1>
 
-    <p style="
-    font-size:14px;
-    color:var(--accent);
-    margin-top:-2px;
-    margin-bottom:10px;
-    font-weight:500;
-    ">
-    Statistical Machine Learning for Imperfect Data
-    </p>
+      <p style="font-size:0.875rem;color:var(--accent);margin-top:-2px;margin-bottom:10px;font-weight:500;">
+        Statistical Machine Learning for Imperfect Data
+      </p>
 
-    <p class="position">
-    Ph.D. Candidate &nbsp;·&nbsp; Department of Computer Science &nbsp;·&nbsp; Western University
-    </p>
+      <p class="position">
+        Ph.D. Candidate &nbsp;·&nbsp; Department of Computer Science &nbsp;·&nbsp; Western University
+      </p>
 
-      <!-- Contact info inline -->
       <div class="hero-contact" style="margin-top: -15px;">
         <a href="mailto:hguo288@uwo.ca"><strong style="font-weight:500;">Email:</strong> hguo288@uwo.ca</a><br />
       </div>
 
-
-      <!-- Link buttons -->
       <div class="contact-links">
         <a href="mailto:hguo288@uwo.ca">Email</a>
         <!-- <a href="https://scholar.google.com" target="_blank">Google Scholar</a> -->
@@ -425,84 +436,73 @@
 
   <!-- ── About ── -->
   <section id="about-text">
-  <p class="section-label">About</p>
+    <p class="section-label">About</p>
 
-  <p class="bio">
-    I am a fourth-year Ph.D. candidate in the Department of Computer Science
-    at Western University, advised by
-    <a href="https://fisher.stats.uwo.ca/faculty/yyi/">Prof. Grace Y. Yi</a>
-    and
-    <a href="https://sites.google.com/site/borriewang/">Prof. Boyu Wang</a>.
-  </p>
+    <p class="bio">
+      I am a fourth-year Ph.D. candidate in the Department of Computer Science
+      at Western University, advised by
+      <a href="https://fisher.stats.uwo.ca/faculty/yyi/">Prof. Grace Y. Yi</a>
+      and
+      <a href="https://sites.google.com/site/borriewang/">Prof. Boyu Wang</a>.
+    </p>
 
-  <p class="bio" style="margin-top: 1rem;">
-    My background spans statistics, machine learning, mathematics, and finance.
-    My research develops statistically principled machine learning methods for
-    learning from imperfect data, including noisy, crowdsourced, and
-    heterogeneous supervision. I combine statistical theory with modern machine
-    learning to study robust learning, uncertainty modeling, and reliable
-    prediction.
-  </p>
+    <p class="bio" style="margin-top: 1rem;">
+      My background spans statistics, machine learning, mathematics, and finance.
+      My research develops statistically principled machine learning methods for
+      learning from imperfect data, including noisy, crowdsourced, and
+      heterogeneous supervision. I combine statistical theory with modern machine
+      learning to study robust learning, uncertainty modeling, and reliable
+      prediction.
+    </p>
 
-  <p class="bio" style="margin-top: 1rem;">
-    More recently, I have become interested in multimodal medical AI and
-    foundation models, particularly in settings involving uncertainty,
-    imperfect supervision, and clinical reliability.
-  </p>
+    <p class="bio" style="margin-top: 1rem;">
+      More recently, I have become interested in multimodal medical AI and
+      foundation models, particularly in settings involving uncertainty,
+      imperfect supervision, and clinical reliability.
+    </p>
 
-  <p class="bio" style="margin-top: 1rem; color:var(--accent);">
-  Available for postdoctoral positions starting <strong style="font-weight:500;">August 2026</strong>.
-</p>
-
-</section>
-
+    <p class="bio" style="margin-top: 1rem; color:var(--accent);">
+      Available for postdoctoral positions starting <strong style="font-weight:500;">August 2026</strong>.
+    </p>
+  </section>
 
   <!-- ── Research Interests ── -->
   <section id="interests">
     <p class="section-label">Research interests</p>
     <div class="tags">
-  <span class="tag">Statistical Machine Learning</span>
-  <span class="tag">Learning with Imperfect Data</span>
-  <span class="tag">Noisy Label Learning</span>
-  <span class="tag">Weak and Crowdsourced Supervision</span>
-  <span class="tag">Robust and Distributionally Robust Learning</span>
-  <span class="tag">Uncertainty Quantification</span>
-  <span class="tag">Medical AI and Foundation Models</span>
-</div>
+      <span class="tag">Statistical Machine Learning</span>
+      <span class="tag">Learning with Imperfect Data</span>
+      <span class="tag">Noisy Label Learning</span>
+      <span class="tag">Weak and Crowdsourced Supervision</span>
+      <span class="tag">Robust and Distributionally Robust Learning</span>
+      <span class="tag">Uncertainty Quantification</span>
+      <span class="tag">Medical AI and Foundation Models</span>
+    </div>
   </section>
 
-
   <!-- ── Working Papers ── -->
-<section id="working-papers">
-  <p class="section-label">Working papers</p>
-  <ul class="pub-list">
+  <section id="working-papers">
+    <p class="section-label">Working papers</p>
+    <ul class="pub-list">
 
-    <li class="pub">
-      <p class="pub-title">
-        Instance-Dependent Bayesian Modeling and Robust Training with Crowdsourced Noisy Data.
-        <span class="badge" style="background:#eef3fb;color:#2a5298;">In preparation</span>
-      </p>
-      <p class="pub-authors"><strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>, Grace Y. Yi</p>
-    </li>
+      <li class="pub">
+        <p class="pub-title">
+          Instance-Dependent Bayesian Modeling and Robust Training with Crowdsourced Noisy Data.
+          <span class="badge" style="background:#eef3fb;color:#2a5298;">In preparation</span>
+        </p>
+        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi</p>
+      </li>
 
-    <li class="pub">
-      <p class="pub-title">
-        Reliability-Aware Longitudinal Clinical Prediction from Multimodal Electronic Health Records.
-        <span class="badge" style="background:#eef3fb;color:#2a5298;">In preparation</span>
-      </p>
-      <p class="pub-authors"><strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>, Yi Wan, Boyu Wang, Grace Y. Yi</p>
-    </li>
+      <li class="pub">
+        <p class="pub-title">
+          Reliability-Aware Longitudinal Clinical Prediction from Multimodal Electronic Health Records.
+          <span class="badge" style="background:#eef3fb;color:#2a5298;">In preparation</span>
+        </p>
+        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Yi Wan, Boyu Wang, Grace Y. Yi</p>
+      </li>
 
-    <!-- <li class="pub">
-      <p class="pub-title">
-        Dual-Granularity Learning for Regression with Continuous Noisy Labels.
-        <span class="badge" style="background:#eef3fb;color:#2a5298;">Under review</span>
-      </p>
-    </li> -->
-
-  </ul>
-</section>
-
+    </ul>
+  </section>
 
   <!-- ── Publications ── -->
   <section id="publications">
@@ -513,20 +513,20 @@
         <p class="pub-title">
           Addressing both Variable Selection and Misclassified Responses with Parametric and Semiparametric methods.
         </p>
-        <p class="pub-authors"><strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>, Grace Y. Yi, Boyu Wang</p>
+        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi, Boyu Wang</p>
         <p class="pub-venue">Bernoulli, <span class="year">2026.</span></p>
         <div class="pub-links">
           <a href="https://projecteuclid.org/journals/bernoulli/volume-32/issue-2/Addressing-both-variable-selection-and-misclassified-responses-with-parametric-and/10.3150/25-BEJ1907.short">paper</a>
           <a href="https://github.com/hguo1728/Variable-Selection-and-Misclassified-Responses">code</a>
-          <a href="https://arxiv.org/abs/2603.13561">ArXiv</a>
+          <a href="https://arxiv.org/abs/2603.13561">arXiv</a>
         </div>
       </li>
 
       <li class="pub">
         <p class="pub-title">Revisiting Source-Free Domain Adaptation: a New Perspective via Uncertainty Control</p>
-        <p class="pub-authors">Gezheng Xu*, <strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>*, Li Yi, Charles Ling, Boyu Wang, Grace Y. Yi</p>
+        <p class="pub-authors">Gezheng Xu*, <strong style="font-weight:700;">Hui Guo</strong>*, Li Yi, Charles Ling, Boyu Wang, Grace Y. Yi</p>
         <p class="pub-venue">International Conference on Learning Representations (ICLR), <span class="year">2025.</span></p>
-        <p style="font-size:12px;color:var(--light);margin-top:2px;">* Equal contribution</p>
+        <p style="font-size:0.75rem;color:var(--text);margin-top:2px;">* Equal contribution</p>
         <div class="pub-links">
           <a href="https://openreview.net/pdf?id=nx9Z5Kva96">paper</a>
           <a href="https://github.com/xugezheng/UCon_SFDA">code</a>
@@ -536,7 +536,7 @@
 
       <li class="pub">
         <p class="pub-title">Physician Effects in Critical Care: A Causal Inference Approach Through Propensity Weighting with Parametric and Super Learning Methods</p>
-        <p class="pub-authors">Yuan Bian, Yu Shi, <strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>, Grace Y. Yi, Wenqing He</p>
+        <p class="pub-authors">Yuan Bian, Yu Shi, <strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi, Wenqing He</p>
         <p class="pub-venue">Journal of Data Science, <span class="year">2025.</span></p>
         <div class="pub-links">
           <a href="https://jds-online.org/journal/JDS/article/1376/info">paper</a>
@@ -545,20 +545,19 @@
 
       <li class="pub">
         <p class="pub-title">Learning from Noisy Labels via Conditional Distributionally Robust Optimization</p>
-        <p class="pub-authors"><strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>, Grace Y. Yi, Boyu Wang</p>
+        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi, Boyu Wang</p>
         <p class="pub-venue">Neural Information Processing Systems (NeurIPS), <span class="year">2024.</span></p>
         <div class="pub-links">
           <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/96af549bb29d01b1713e88e5c3899ceb-Paper-Conference.pdf">paper</a>
           <a href="https://github.com/hguo1728/AdaptCDRP">code</a>
-          <a href="https://arxiv.org/pdf/2411.17113">ArXiv</a>
+          <a href="https://arxiv.org/pdf/2411.17113">arXiv</a>
           <a href="slides_poster/poster_2024_neurips.pdf">poster</a>
         </div>
       </li>
 
-
       <li class="pub">
         <p class="pub-title">Label Correction of Crowdsourced Noisy Annotations with an Instance-Dependent Noise Transition Model</p>
-        <p class="pub-authors"><strong style="font-weight:500;box-shadow: inset 0 -0.12em 0 rgba(42,82,152,0.22);">Hui Guo</strong>, Boyu Wang, Grace Y. Yi</p>
+        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Boyu Wang, Grace Y. Yi</p>
         <p class="pub-venue">Neural Information Processing Systems (NeurIPS), <span class="year">2023.</span></p>
         <div class="pub-links">
           <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/015a8c69bedcb0a7b2ed2e1678f34399-Paper-Conference.pdf">paper</a>
@@ -575,104 +574,57 @@
     <p class="section-label">Selected Talks</p>
     <ul class="talk-list">
 
-    <li class="talk">
-        <p class="talk-title">"Learning with Noisy Labels: Variable Selection and Misclassification Probability Modeling"</p>
+      <li class="talk">
+        <p class="talk-title">Learning with Noisy Labels: Variable Selection and Misclassification Probability Modeling</p>
         <p class="talk-meta">Lightning talk for Dr. Raymond Carroll's visit &nbsp;·&nbsp; London, Canada &nbsp;·&nbsp; June 2025</p>
         <div class="pub-links">
-            <a href="slides_poster/slides_2025_raymond.pdf">slides</a>
+          <a href="slides_poster/slides_2025_raymond.pdf">slides</a>
         </div>
-    </li>
+      </li>
 
-    <li class="talk">
-        <p class="talk-title">Case study "Personalized Physician Recommendation for Critical Care Using the TreeSHAP Method"</p>
+      <li class="talk">
+        <p class="talk-title">Case study: Personalized Physician Recommendation for Critical Care Using the TreeSHAP Method</p>
         <p class="talk-meta">Annual Meeting of the Statistical Society of Canada &nbsp;·&nbsp; Online &nbsp;·&nbsp; May 2022</p>
         <div class="pub-links">
-            <a href="slides_poster/poster_JDS.pdf">poster</a>
+          <a href="slides_poster/poster_JDS.pdf">poster</a>
         </div>
-    </li>
+      </li>
 
     </ul>
   </section>
 
+  <!-- ── Beyond ── -->
   <section id="beyond">
-  <p class="section-label">Beyond research</p>
-  <p class="beyond-intro">
-    Outside of work, I enjoy photography (both digital 📷 and film 🎞️!).
-  </p>
+    <p class="section-label">Beyond research</p>
+    <p class="beyond-intro">
+      Outside of work, I enjoy photography (both digital 📷 and film 🎞️!).
+    </p>
 
-  <details>
-    <summary style="font-size:13px;color:var(--muted);cursor:pointer;user-select:none;margin-bottom:1rem;">
-      View photos
-    </summary>
-    <div class="photo-grid">
-      <div class="photo-item">
-        <a href="photos_hobby/img1.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img1.JPG" />
-        </a>
+    <details>
+      <summary style="font-size:0.81rem;color:var(--muted);cursor:pointer;user-select:none;margin-bottom:1rem;">
+        View photos
+      </summary>
+      <div class="photo-grid">
+        <div class="photo-item"><a href="photos_hobby/img1.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img1.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img2.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img2.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img3.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img3.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img4.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img4.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img5.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img5.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img6.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img6.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img7.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img7.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img9.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img9.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img11.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img11.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img12.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img12.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img13.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img13.JPG" /></a></div>
+        <div class="photo-item"><a href="photos_hobby/img14.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img14.JPG" /></a></div>
       </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img2.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img2.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img3.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img3.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img4.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img4.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img5.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img5.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img6.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img6.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img7.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img7.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img9.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img9.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img11.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img11.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img12.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img12.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img13.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img13.JPG" />
-        </a>
-      </div>
-      <div class="photo-item">
-        <a href="photos_hobby/img14.JPG" class="glightbox" data-gallery="photos">
-          <img src="photos_hobby/img14.JPG" />
-        </a>
-      </div>
-    </div>
-  </details>
-</section>
+    </details>
+  </section>
 
   <!-- ── Contact ── -->
   <section id="contact">
     <p class="section-label">Contact</p>
-    <p style="font-size: 14px; color: var(--muted); line-height: 1.8;">
+    <p style="font-size: 0.94rem; color: var(--muted); line-height: 1.8;">
       Email: <a href="mailto:hguo288@uwo.ca">hguo288@uwo.ca</a><br />
       Office: Room 222, Middlesex College, Western University<br />
       London, Ontario, Canada
