@@ -14,6 +14,16 @@
     gtag('config', 'G-ZCTG6L22RE');
   </script>
 
+  <!-- Apply saved / system theme before paint to avoid flashing -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
   <!-- Open Graph -->
   <meta property="og:title" content="Hui Guo — Academic Homepage" />
   <meta property="og:description" content="Ph.D. candidate at Western University. Research in statistical machine learning, noisy label learning, and trustworthy medical AI." />
@@ -22,626 +32,471 @@
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <!-- Icons (same family AcademicPages uses) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 
   <style>
+    /* ───────────── Theme tokens (AcademicPages / Minimal Mistakes palette) ───────────── */
     :root {
-      --serif: 'EB Garamond', Georgia, serif;
-      --sans: 'DM Sans', sans-serif;
-      --text: #1a1a1a;
-      --muted: #6b6b6b;
-      --light: #999;
-      --border: #e5e5e5;
-      --accent: #2a5298;
-      --bg: #fafaf8;
-      --card: #ffffff;
-
-      /* ── Change this one value to scale all text ── */
-      --base: 16px;
+      --font: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", "Helvetica Neue",
+              "Lucida Grande", Arial, sans-serif;
+      --bg: #ffffff;
+      --text: #4a4f55;
+      --heading: #2b3036;
+      --muted: #808790;
+      --border: #f2f3f5;
+      --border-strong: #e2e5e9;
+      --link: #2e4a62;
+      --link-hover: #1b3044;
+      --footer-bg: #f2f3f3;
+      --chip-bg: #f7f8f8;
+      --masthead-h: 64px;
     }
-
-    html { font-size: var(--base); }
+    html[data-theme="dark"] {
+      --bg: #1e2124;
+      --text: #d6d8da;
+      --heading: #f0f1f2;
+      --muted: #9aa1a7;
+      --border: #2c3034;
+      --border-strong: #3a3f44;
+      --link: #94afc6;
+      --link-hover: #c0d1df;
+      --footer-bg: #181a1c;
+      --chip-bg: #272b2f;
+    }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: calc(var(--masthead-h) + 12px); }
+    @media (min-width: 1024px) { html { font-size: 17px; } }
+
     body {
-      font-family: var(--sans);
+      font-family: var(--font);
       background: var(--bg);
       color: var(--text);
-      font-size: 1rem;
-      line-height: 1.7;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color .2s, color .2s;
     }
 
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .container {
-      max-width: 890px;
-      margin: 0 auto;
-      padding: 0 2rem;
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: var(--link-hover); text-decoration: underline; }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px;
     }
 
-    /* ── Nav ── */
-    nav {
-      border-bottom: 1px solid var(--border);
-      padding: 1.25rem 0;
-      position: sticky;
-      top: 0;
+    /* ───────────── Masthead ───────────── */
+    .masthead {
+      position: sticky; top: 0; z-index: 20;
       background: var(--bg);
-      z-index: 10;
+      border-bottom: 1px solid var(--border-strong);
+      height: var(--masthead-h);
+    }
+    .masthead__inner {
+      max-width: 1200px; height: 100%;
+      margin: 0 auto; padding: 0 1.5rem;
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .site-title {
+      font-weight: 700; font-size: 1.1rem; color: var(--heading);
+      white-space: nowrap;
+    }
+    .site-title:hover { text-decoration: none; color: var(--heading); }
+
+    .visible-links {
+      display: flex; gap: .25rem; list-style: none;
+      margin-left: auto; overflow-x: auto; scrollbar-width: none;
+    }
+    .visible-links::-webkit-scrollbar { display: none; }
+    .visible-links a {
+      position: relative; display: block;
+      padding: .5rem .7rem; font-size: .88rem;
+      color: var(--muted); white-space: nowrap;
+    }
+    .visible-links a::before {
+      content: ""; position: absolute; left: .7rem; right: .7rem; bottom: .25rem;
+      height: 3px; background: var(--border-strong);
+      transform: scaleX(0); transition: transform .25s ease;
+    }
+    .visible-links a:hover { color: var(--heading); text-decoration: none; }
+    .visible-links a:hover::before { transform: scaleX(1); }
+
+    .theme-toggle {
+      background: none; border: 0; cursor: pointer;
+      color: var(--muted); font-size: 1rem; padding: .4rem;
+    }
+    .theme-toggle:hover { color: var(--heading); }
+
+    /* ───────────── Layout ───────────── */
+    .layout {
+      max-width: 1200px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 3rem;
+      display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 3rem;
     }
 
-    nav .inner {
-      max-width: 890px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* ───────────── Sidebar (author profile) ───────────── */
+    .sidebar {
+      position: sticky; top: calc(var(--masthead-h) + 2rem);
+      align-self: start;
+      font-size: .85rem;
     }
-
-    .nav-name {
-      font-family: var(--serif);
-      font-size: 1.06rem;
-      color: var(--text);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.75rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 0.875rem;
-      color: var(--muted);
-      letter-spacing: 0.03em;
-    }
-
-    .nav-links a:hover { color: var(--text); text-decoration: none; }
-
-    /* ── Hero ── */
-    .hero {
-      padding: 3.5rem 0 2.5rem;
-      display: flex;
-      gap: 2.5rem;
-      align-items: flex-start;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero-info h1 {
-      font-family: var(--serif);
-      font-size: 1.75rem;
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 6px;
-    }
-
-    .hero-info .position {
-      font-size: 0.875rem;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .hero-contact {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 2;
-    }
-
-    .hero-contact a { color: var(--muted); }
-    .hero-contact a:hover { color: var(--accent); text-decoration: none; }
-
-    .contact-links {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .contact-links a {
-      font-size: 0.8rem;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      color: var(--muted);
-      transition: border-color 0.15s, color 0.15s;
-    }
-
-    .contact-links a:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      text-decoration: none;
-    }
-
-    /* ── Sections ── */
-    section {
-      padding: 2rem 0;
-      border-bottom: 1px solid rgba(42,82,152,0.11);
-    }
-
-    section:last-child { border-bottom: none; }
-
-    .section-label {
-      font-size: 0.81rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--light);
-      margin-bottom: 1.5rem;
-    }
-
-    .bio {
-      font-size: 0.97rem;
-      color: var(--text);
-      line-height: 1.75;
-      max-width: 830px;
-    }
-
-    /* ── Interests ── */
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tag {
-      font-size: 0.875rem;
-      padding: 5px 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--text);
-    }
-
-    /* ── Publications ── */
-    .pub-list { list-style: none; }
-
-    .pub {
-      padding: 1.1rem 0 0.5rem 0.8rem;
-      position: relative;
-    }
-
-    .pub::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 1.7rem;
-      width: 5px;
-      height: 5px;
-      background: var(--accent);
-      border-radius: 1px;
-    }
-
-    .pub:last-child { border-bottom: none; }
-
-    .pub-title {
-      font-family: var(--serif);
-      font-size: 1.06rem;
-      color: var(--text);
-      margin-bottom: 4px;
-      line-height: 1.4;
-    }
-
-    .pub-authors {
-      font-size: 0.875rem;
-      color: var(--text);
-      margin-bottom: 3px;
-    }
-
-    .pub-authors strong { color: var(--text); font-weight: 700; }
-
-    .pub-venue {
-      font-size: 0.875rem;
-      color: var(--text);
-      font-style: italic;
-    }
-
-    .pub-venue .year { font-style: normal; }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.66rem;
-      padding: 2px 8px;
-      border-radius: 3px;
-      background: #e8edf7;
-      color: var(--accent);
-      font-style: normal;
-      margin-left: 6px;
-      vertical-align: middle;
-      font-family: var(--sans);
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-
-    .pub-links {
-      margin-top: 7px;
-      display: flex;
-      gap: 8px;
-    }
-
-    .pub-links a {
-      font-size: 0.78rem;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      border-radius: 3px;
-      padding: 2px 8px;
-      line-height: 1.2;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .pub-links a:hover {
-      background: var(--accent);
-      color: #fff;
-      text-decoration: none;
-    }
-
-    /* ── Talks ── */
-    .talk-list { list-style: none; }
-
-    .talk {
-      padding: 1.1rem 0 0.5rem 0.8rem;
-      position: relative;
-    }
-
-    .talk::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 1.7rem;
-      width: 5px;
-      height: 5px;
-      background: var(--accent);
-      border-radius: 1px;
-    }
-
-    .talk:last-child { border-bottom: none; }
-
-    .talk-title {
-      font-family: var(--serif);
-      font-size: 1.06rem;
-      color: var(--text);
-      margin-bottom: 4px;
-      line-height: 1.4;
-    }
-
-    .talk-meta {
-      font-size: 0.875rem;
-      color: var(--muted);
-    }
-
-    /* ── Beyond ── */
-    .beyond-intro {
-      font-size: 0.97rem;
-      color: var(--text);
-      line-height: 1.75;
-      margin-bottom: 1.5rem;
-      max-width: 560px;
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .photo-item {
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-      border-radius: 4px;
-      background: #e8e8e4;
-      position: relative;
-    }
-
-    .photo-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .author__avatar img {
+      width: 100%; max-width: 175px; aspect-ratio: 1/1; object-fit: cover;
+      border-radius: 50%; padding: 5px; border: 1px solid var(--border-strong);
       display: block;
-      transition: transform 0.3s ease;
+    }
+    .author__name { margin-top: 1rem; font-size: 1.25rem; font-weight: 700; color: var(--heading); }
+    .author__bio { margin-top: .3rem; color: var(--muted); font-style: italic; line-height: 1.45; }
+    .author__urls { list-style: none; margin-top: 1.1rem; }
+    .author__urls li { display: flex; align-items: baseline; gap: .6rem; padding: .22rem 0; color: var(--text); }
+    .author__urls li i { width: 1.1em; text-align: center; color: var(--muted); }
+    .author__urls a { color: var(--text); }
+    .author__urls a:hover { color: var(--link); }
+
+    /* ───────────── Main content ───────────── */
+    .page__title { font-size: 2rem; font-weight: 700; color: var(--heading); line-height: 1.2; margin-bottom: 1rem; }
+    .page__lead { color: var(--link); font-weight: 500; margin-bottom: 1.5rem; }
+
+    .page__content h2 {
+      font-size: 1.4rem; color: var(--heading); font-weight: 700;
+      margin: 2.4rem 0 1rem; padding-bottom: .4rem;
+      border-bottom: 1px solid var(--border-strong);
+    }
+    .page__content p { margin-bottom: 1rem; max-width: 72ch; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .tags span {
+      font-size: .82rem; padding: .25rem .7rem;
+      border: 1px solid var(--border-strong); border-radius: 4px;
+      background: var(--chip-bg);
     }
 
-    .photo-item:hover img { transform: scale(1.04); }
+    /* Archive items — publications, papers, talks */
+    .archive { list-style: none; }
+    .archive__item { padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .archive__item:last-child { border-bottom: none; }
+    .archive__item-title { font-size: 1.02rem; font-weight: 700; line-height: 1.4; color: var(--link); }
+    .archive__item-meta { font-size: .88rem; margin-top: .25rem; }
+    .archive__item-meta strong { color: var(--heading); }
+    .archive__item-venue { font-size: .88rem; color: var(--muted); margin-top: .15rem; }
+    .archive__item-note { font-size: .78rem; color: var(--muted); margin-top: .15rem; }
+    .status { font-size: .78rem; color: var(--muted); font-style: italic; font-weight: 400; margin-left: .3rem; }
 
-    .photo-item .caption {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 6px 10px;
-      font-size: 0.69rem;
-      color: #fff;
-      background: linear-gradient(transparent, rgba(0,0,0,0.45));
-      opacity: 1;
+    .item-links { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin-top: .45rem; font-size: .84rem; }
+    .item-links a i { margin-right: .3rem; font-size: .8em; }
+
+    /* Photos */
+    details summary { cursor: pointer; color: var(--link); font-size: .9rem; margin-bottom: 1rem; }
+    .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .photo-grid a { display: block; aspect-ratio: 1/1; overflow: hidden; border-radius: 3px; background: var(--chip-bg); }
+    .photo-grid img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .2s; }
+    .photo-grid a:hover img { opacity: .85; }
+
+    /* ───────────── Footer ───────────── */
+    .page__footer {
+      background: var(--footer-bg); color: var(--muted);
+      border-top: 1px solid var(--border-strong);
+      padding: 1.75rem 1.5rem; font-size: .8rem; text-align: center;
     }
+    .page__footer .follow { margin-bottom: .5rem; }
+    .page__footer .follow strong { color: var(--text); margin-right: .5rem; }
+    .page__footer .follow a { color: var(--muted); margin: 0 .5rem; }
+    .page__footer .follow a:hover { color: var(--link); }
 
-    .hobbies-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 1.25rem;
+    /* ───────────── Responsive ───────────── */
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 1.5rem; }
+      .sidebar {
+        position: static;
+        display: grid; grid-template-columns: 88px 1fr; column-gap: 1rem; align-items: center;
+        padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-strong);
+      }
+      .author__avatar img { max-width: 88px; }
+      .author__name { margin-top: 0; }
+      .author__urls { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .1rem 1.2rem; }
+      .page__title { font-size: 1.6rem; }
     }
-
-    .hobby-tag {
-      font-size: 0.875rem;
-      padding: 5px 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--muted);
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.75rem;
-      color: var(--light);
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 540px) {
-      .hero { flex-direction: column; gap: 1.5rem; }
-      .nav-links { gap: 1rem; }
+    @media (max-width: 560px) {
+      .masthead__inner { padding: 0 1rem; gap: .5rem; }
+      .layout { padding-left: 1rem; padding-right: 1rem; }
       .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="inner">
-    <span class="nav-name">Hui Guo</span>
-    <ul class="nav-links">
+<!-- ───────────── Masthead ───────────── -->
+<header class="masthead">
+  <div class="masthead__inner">
+    <a class="site-title" href="#">Hui Guo</a>
+    <ul class="visible-links">
       <li><a href="#about">About</a></li>
       <li><a href="#working-papers">Working Papers</a></li>
       <li><a href="#publications">Publications</a></li>
       <li><a href="#talks">Talks</a></li>
       <li><a href="#beyond">Beyond</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+      <i class="fa-solid fa-moon"></i>
+    </button>
   </div>
-</nav>
+</header>
 
-<div class="container">
+<div class="layout">
 
-  <!-- ── Hero ── -->
-  <div class="hero" id="about">
-    <img src="photos_main/p1.png" alt="Hui Guo" style="width:110px;height:110px;border-radius:50%;object-fit:cover;flex-shrink:0;margin-top:4px;" />
-
-    <div class="hero-info">
-      <h1>Hui Guo</h1>
-
-      <p style="font-size:0.95rem;color:var(--accent);margin-top:-2px;margin-bottom:10px;font-weight:500;">
-        Learning and Inference from Complex, Imperfect, and Uncertain Data
-      </p>
-
-      <p class="position">
-        Ph.D. Candidate &nbsp;·&nbsp; Department of Computer Science &nbsp;·&nbsp; Western University
-      </p>
-
-      <div class="hero-contact" style="margin-top: -15px;">
-        <a href="mailto:hguo288@uwo.ca"><strong style="font-weight:500;">Email:</strong> hguo288@uwo.ca</a><br />
-      </div>
-
-      <div class="contact-links">
-        <a href="mailto:hguo288@uwo.ca">Email</a>
-        <!-- <a href="https://scholar.google.com" target="_blank">Google Scholar</a> -->
-        <!-- <a href="https://github.com/hguo1728" target="_blank">GitHub</a> -->
-        <a href="CV.pdf" target="_blank">CV (PDF)</a>
-      </div>
+  <!-- ───────────── Sidebar ───────────── -->
+  <aside class="sidebar">
+    <div class="author__avatar">
+      <img src="photos_main/p1.png" alt="Hui Guo" />
     </div>
-  </div>
-
-  <!-- ── About ── -->
-  <section id="about-text">
-    <p class="section-label">About</p>
-
-    <p class="bio">
-      I am a fourth-year Ph.D. candidate in the Department of Computer Science
-      at Western University, advised by
-      <a href="https://fisher.stats.uwo.ca/faculty/yyi/">Prof. Grace Y. Yi</a>
-      and
-      <a href="https://sites.google.com/site/borriewang/">Prof. Boyu Wang</a>.
-    </p>
-
-    <p class="bio" style="margin-top: 1rem;">
-      My research broadly spans statistics and machine learning. I am interested in 
-      developing principled methodologies for learning, inference, and decision-making 
-      from complex, imperfect, and uncertain data. My work combines ideas from statistical 
-      modeling, machine learning, uncertainty quantification, and robust learning.
-    </p>
-
-    <p class="bio" style="margin-top: 1rem;">
-      Broadly, I am interested in probabilistic and latent variable modeling, missing data, 
-      causal inference, trustworthy AI, foundation models, and other emerging areas of 
-      data-driven discovery. I am particularly interested in applications to healthcare and 
-      biomedical research, including multimodal electronic health records, medical imaging, 
-      and large language models.
-    </p>
-
-    <!-- <p class="bio" style="margin-top: 1rem; color:var(--accent);">
-      <strong style="font-weight:500;">Available for postdoctoral positions starting August 2026</strong>.
-    </p> -->
-  </section>
-
-  <!-- ── Research Interests ── -->
-  <section id="interests">
-    <p class="section-label">Research interests</p>
-    <div class="tags">
-      <span class="tag">Statistical Machine Learning</span>
-      <span class="tag">Learning with Imperfect Data</span>
-      <span class="tag">Weak and Crowdsourced Supervision</span>
-      <span class="tag">Noisy Label Learning</span>
-      <span class="tag">Robust and Distributionally Robust Learning</span>
-      <span class="tag">Uncertainty Quantification</span>
-      <span class="tag">Medical AI and Foundation Models</span>
+    <div>
+      <h3 class="author__name">Hui Guo</h3>
+      <p class="author__bio">Ph.D. Candidate</p>
     </div>
-  </section>
-
-  <!-- ── Working Papers ── -->
-  <section id="working-papers">
-    <p class="section-label">Working papers</p>
-    <ul class="pub-list">
-
-      <li class="pub">
-        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi (2026).</p>
-        <p class="pub-title">
-          Instance-Dependent Bayesian Modeling and Robust Training with Crowdsourced Noisy Data.
-          <span class="badge" style="background:#eef3fb;color:#2a5298;">In preparation</span>
-        </p>
-      </li>
-
-      <li class="pub">
-        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Yi Wan, Boyu Wang, Grace Y. Yi (2026).</p>
-        <p class="pub-title">
-          Reliability-Aware Longitudinal Clinical Prediction from Multimodal Electronic Health Records.
-          <span class="badge" style="background:#eef3fb;color:#2a5298;">In preparation</span>
-        </p>
-      </li>
-
+    <ul class="author__urls">
+      <li><i class="fa-solid fa-location-dot"></i><span>London, Ontario, Canada</span></li>
+      <li><i class="fa-solid fa-building-columns"></i><span>Western University</span></li>
+      <li><i class="fa-solid fa-envelope"></i><a href="mailto:hguo288@uwo.ca">Email</a></li>
+      <li><i class="fa-solid fa-file-lines"></i><a href="CV.pdf" target="_blank">CV (PDF)</a></li>
+      <!-- <li><i class="ai ai-google-scholar fa-solid fa-graduation-cap"></i><a href="https://scholar.google.com" target="_blank">Google Scholar</a></li> -->
+      <!-- <li><i class="fa-brands fa-github"></i><a href="https://github.com/hguo1728" target="_blank">GitHub</a></li> -->
     </ul>
-  </section>
+  </aside>
 
-  <!-- ── Publications ── -->
-  <section id="publications">
-    <p class="section-label">Selected publications</p>
-    <ul class="pub-list">
+  <!-- ───────────── Main ───────────── -->
+  <main class="page__content">
 
-      <li class="pub">
-        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi, Boyu Wang (2026).</p>
-        <p class="pub-title">
-          Addressing both Variable Selection and Misclassified Responses with Parametric and Semiparametric methods.
-        </p>
-        <p class="pub-venue">Bernoulli 32(2): 1303-1327.</span></p>
-        <div class="pub-links">
-          <a href="https://projecteuclid.org/journals/bernoulli/volume-32/issue-2/Addressing-both-variable-selection-and-misclassified-responses-with-parametric-and/10.3150/25-BEJ1907.short">paper</a>
-          <a href="https://github.com/hguo1728/Variable-Selection-and-Misclassified-Responses">code</a>
-          <a href="https://arxiv.org/abs/2603.13561">arXiv</a>
-        </div>
-      </li>
+    <section id="about">
+      <h1 class="page__title">About me</h1>
+      <p class="page__lead">Learning and Inference from Complex, Imperfect, and Uncertain Data</p>
 
-      <li class="pub">
-        <p class="pub-authors">Gezheng Xu*, <strong style="font-weight:700;">Hui Guo</strong>*, Li Yi, Charles Ling, Boyu Wang, Grace Y. Yi (2025).</p>
-        <p class="pub-title">Revisiting Source-Free Domain Adaptation: a New Perspective via Uncertainty Control.</p>
-        <p class="pub-venue">International Conference on Learning Representations (ICLR).</span></p>
-        <p style="font-size:0.75rem;color:var(--text);margin-top:2px;">* Equal contribution</p>
-        <div class="pub-links">
-          <a href="https://openreview.net/pdf?id=nx9Z5Kva96">paper</a>
-          <a href="https://github.com/xugezheng/UCon_SFDA">code</a>
-          <a href="slides_poster/poster_2025_ICLR.pdf">poster</a>
-        </div>
-      </li>
+      <p>
+        I am a fourth-year Ph.D. candidate in the Department of Computer Science
+        at Western University, advised by
+        <a href="https://fisher.stats.uwo.ca/faculty/yyi/">Prof. Grace Y. Yi</a>
+        and
+        <a href="https://sites.google.com/site/borriewang/">Prof. Boyu Wang</a>.
+      </p>
+      <p>
+        My research broadly spans statistics and machine learning. I am interested in
+        developing principled methodologies for learning, inference, and decision-making
+        from complex, imperfect, and uncertain data. My work combines ideas from statistical
+        modeling, machine learning, uncertainty quantification, and robust learning.
+      </p>
+      <p>
+        Broadly, I am interested in probabilistic and latent variable modeling, missing data,
+        causal inference, trustworthy AI, foundation models, and other emerging areas of
+        data-driven discovery. I am particularly interested in applications to healthcare and
+        biomedical research, including multimodal electronic health records, medical imaging,
+        and large language models.
+      </p>
+      <!-- <p><strong>Available for postdoctoral positions starting August 2026.</strong></p> -->
+    </section>
 
-      <li class="pub">
-        <p class="pub-authors">Yuan Bian, Yu Shi, <strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi, Wenqing He (2025).</p>
-        <p class="pub-title">Physician Effects in Critical Care: A Causal Inference Approach Through Propensity Weighting with Parametric and Super Learning Methods.</p>
-        <p class="pub-venue">Journal of Data Science 23(1): 130-148.</p>
-        <div class="pub-links">
-          <a href="https://jds-online.org/journal/JDS/article/1376/info">paper</a>
-          <a href="https://github.com/krisyuanbian/pprccutm">code</a>
-          <a href="https://doi.org/10.13140/RG.2.2.11672.66566">poster</a>
-        </div>
-      </li>
-
-      <li class="pub">
-        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Grace Y. Yi, Boyu Wang (2024).</p>
-        <p class="pub-title">Learning from Noisy Labels via Conditional Distributionally Robust Optimization.</p>
-        <p class="pub-venue">Neural Information Processing Systems (NeurIPS).</span></p>
-        <div class="pub-links">
-          <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/96af549bb29d01b1713e88e5c3899ceb-Paper-Conference.pdf">paper</a>
-          <a href="https://github.com/hguo1728/AdaptCDRP">code</a>
-          <a href="https://arxiv.org/pdf/2411.17113">arXiv</a>
-          <a href="slides_poster/poster_2024_neurips.pdf">poster</a>
-        </div>
-      </li>
-
-      <li class="pub">
-        <p class="pub-authors"><strong style="font-weight:700;">Hui Guo</strong>, Boyu Wang, Grace Y. Yi (2023)</p>
-        <p class="pub-title">Label Correction of Crowdsourced Noisy Annotations with an Instance-Dependent Noise Transition Model</p>
-        <p class="pub-venue">Neural Information Processing Systems (NeurIPS).</span></p>
-        <div class="pub-links">
-          <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/015a8c69bedcb0a7b2ed2e1678f34399-Paper-Conference.pdf">paper</a>
-          <a href="https://github.com/hguo1728/BayesianIDNT">code</a>
-          <a href="slides_poster/poster_2023_neurips.pdf">poster</a>
-        </div>
-      </li>
-
-    </ul>
-  </section>
-
-  <!-- ── Talks ── -->
-  <section id="talks">
-    <p class="section-label">Selected Talks</p>
-    <ul class="talk-list">
-
-      <li class="talk">
-        <p class="talk-title">Learning with Noisy Labels: Variable Selection and Misclassification Probability Modeling.</p>
-        <p class="talk-meta">Lightning talk for Dr. Raymond Carroll's visit &nbsp;·&nbsp; London, Canada &nbsp;·&nbsp; June 2025</p>
-        <div class="pub-links">
-          <a href="slides_poster/slides_2025_raymond.pdf">slides</a>
-        </div>
-      </li>
-
-      <li class="talk">
-        <p class="talk-title">Case study: Personalized Physician Recommendation for Critical Care Using the TreeSHAP Method.</p>
-        <p class="talk-meta">Annual Meeting of the Statistical Society of Canada &nbsp;·&nbsp; Online &nbsp;·&nbsp; May 2022</p>
-        <div class="pub-links">
-          <a href="slides_poster/poster_JDS.pdf">poster</a>
-        </div>
-      </li>
-
-    </ul>
-  </section>
-
-  <!-- ── Beyond ── -->
-  <section id="beyond">
-    <p class="section-label">Beyond research</p>
-    <p class="beyond-intro">
-      Outside of work, I enjoy photography (both digital 📷 and film 🎞️!).
-    </p>
-
-    <details>
-      <summary style="font-size:0.81rem;color:var(--muted);cursor:pointer;user-select:none;margin-bottom:1rem;">
-        View photos
-      </summary>
-      <div class="photo-grid">
-        <div class="photo-item"><a href="photos_hobby/img1.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img1.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img2.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img2.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img3.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img3.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img4.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img4.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img5.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img5.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img6.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img6.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img7.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img7.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img9.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img9.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img11.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img11.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img12.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img12.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img13.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img13.JPG" /></a></div>
-        <div class="photo-item"><a href="photos_hobby/img14.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img14.JPG" /></a></div>
+    <section id="interests">
+      <h2>Research Interests</h2>
+      <div class="tags">
+        <span>Statistical Machine Learning</span>
+        <span>Learning with Imperfect Data</span>
+        <span>Weak and Crowdsourced Supervision</span>
+        <span>Noisy Label Learning</span>
+        <span>Robust and Distributionally Robust Learning</span>
+        <span>Uncertainty Quantification</span>
+        <span>Medical AI and Foundation Models</span>
       </div>
-    </details>
-  </section>
+    </section>
 
-  <!-- ── Contact ── -->
-  <section id="contact">
-    <p class="section-label">Contact</p>
-    <p style="font-size: 0.94rem; color: var(--muted); line-height: 1.8;">
-      Email: <a href="mailto:hguo288@uwo.ca">hguo288@uwo.ca</a><br />
-      Office: Room 222, Middlesex College, Western University<br />
-      London, Ontario, Canada
-    </p>
-  </section>
+    <section id="working-papers">
+      <h2>Working Papers</h2>
+      <ul class="archive">
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Instance-Dependent Bayesian Modeling and Robust Training with Crowdsourced Noisy Data
+            <span class="status">(in preparation)</span>
+          </p>
+          <p class="archive__item-meta"><strong>Hui Guo</strong>, Grace Y. Yi (2026)</p>
+        </li>
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Reliability-Aware Longitudinal Clinical Prediction from Multimodal Electronic Health Records
+            <span class="status">(in preparation)</span>
+          </p>
+          <p class="archive__item-meta"><strong>Hui Guo</strong>, Yi Wan, Boyu Wang, Grace Y. Yi (2026)</p>
+        </li>
+      </ul>
+    </section>
 
+    <section id="publications">
+      <h2>Selected Publications</h2>
+      <ul class="archive">
+
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Dual-Granularity Learning for Regression with Continuous Noisy Labels
+          </p>
+          <p class="archive__item-meta"><strong>Hui Guo</strong>, Boyu Wang, Grace Y. Yi</p>
+          <p class="archive__item-venue">Published in <em>Neural Information Processing Systems (NeurIPS)</em>, 2026</p>
+          <!-- <div class="item-links">
+            <a href="https://projecteuclid.org/journals/bernoulli/volume-32/issue-2/Addressing-both-variable-selection-and-misclassified-responses-with-parametric-and/10.3150/25-BEJ1907.short"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+            <a href="https://github.com/hguo1728/Variable-Selection-and-Misclassified-Responses"><i class="fa-brands fa-github"></i>Code</a>
+            <a href="https://arxiv.org/abs/2603.13561"><i class="fa-solid fa-book-open"></i>arXiv</a>
+          </div> -->
+        </li>
+
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Addressing both Variable Selection and Misclassified Responses with Parametric and Semiparametric Methods
+          </p>
+          <p class="archive__item-meta"><strong>Hui Guo</strong>, Grace Y. Yi, Boyu Wang</p>
+          <p class="archive__item-venue">Published in <em>Bernoulli</em> 32(2): 1303–1327, 2026</p>
+          <div class="item-links">
+            <a href="https://projecteuclid.org/journals/bernoulli/volume-32/issue-2/Addressing-both-variable-selection-and-misclassified-responses-with-parametric-and/10.3150/25-BEJ1907.short"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+            <a href="https://github.com/hguo1728/Variable-Selection-and-Misclassified-Responses"><i class="fa-brands fa-github"></i>Code</a>
+            <a href="https://arxiv.org/abs/2603.13561"><i class="fa-solid fa-book-open"></i>arXiv</a>
+          </div>
+        </li>
+
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Revisiting Source-Free Domain Adaptation: a New Perspective via Uncertainty Control
+          </p>
+          <p class="archive__item-meta">Gezheng Xu*, <strong>Hui Guo</strong>*, Li Yi, Charles Ling, Boyu Wang, Grace Y. Yi</p>
+          <p class="archive__item-venue">Published in <em>International Conference on Learning Representations (ICLR)</em>, 2025</p>
+          <p class="archive__item-note">* Equal contribution</p>
+          <div class="item-links">
+            <a href="https://openreview.net/forum?id=nx9Z5Kva96"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+            <a href="https://github.com/xugezheng/UCon_SFDA"><i class="fa-brands fa-github"></i>Code</a>
+            <a href="slides_poster/poster_2025_ICLR.pdf"><i class="fa-solid fa-image"></i>Poster</a>
+          </div>
+        </li>
+
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Physician Effects in Critical Care: A Causal Inference Approach Through Propensity Weighting with Parametric and Super Learning Methods
+          </p>
+          <p class="archive__item-meta">Yuan Bian, Yu Shi, <strong>Hui Guo</strong>, Grace Y. Yi, Wenqing He</p>
+          <p class="archive__item-venue">Published in <em>Journal of Data Science</em> 23(1): 130–148, 2025</p>
+          <div class="item-links">
+            <a href="https://jds-online.org/journal/JDS/article/1376/info"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+            <a href="https://github.com/krisyuanbian/pprccutm"><i class="fa-brands fa-github"></i>Code</a>
+            <a href="https://doi.org/10.13140/RG.2.2.11672.66566"><i class="fa-solid fa-image"></i>Poster</a>
+          </div>
+        </li>
+
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Learning from Noisy Labels via Conditional Distributionally Robust Optimization
+          </p>
+          <p class="archive__item-meta"><strong>Hui Guo</strong>, Grace Y. Yi, Boyu Wang</p>
+          <p class="archive__item-venue">Published in <em>Neural Information Processing Systems (NeurIPS)</em>, 2024</p>
+          <div class="item-links">
+            <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/96af549bb29d01b1713e88e5c3899ceb-Paper-Conference.pdf"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+            <a href="https://github.com/hguo1728/AdaptCDRP"><i class="fa-brands fa-github"></i>Code</a>
+            <a href="https://arxiv.org/pdf/2411.17113"><i class="fa-solid fa-book-open"></i>arXiv</a>
+            <a href="slides_poster/poster_2024_neurips.pdf"><i class="fa-solid fa-image"></i>Poster</a>
+          </div>
+        </li>
+
+        <li class="archive__item">
+          <p class="archive__item-title">
+            Label Correction of Crowdsourced Noisy Annotations with an Instance-Dependent Noise Transition Model
+          </p>
+          <p class="archive__item-meta"><strong>Hui Guo</strong>, Boyu Wang, Grace Y. Yi</p>
+          <p class="archive__item-venue">Published in <em>Neural Information Processing Systems (NeurIPS)</em>, 2023</p>
+          <div class="item-links">
+            <a href="https://proceedings.neurips.cc/paper_files/paper/2023/file/015a8c69bedcb0a7b2ed2e1678f34399-Paper-Conference.pdf"><i class="fa-solid fa-file-pdf"></i>Paper</a>
+            <a href="https://github.com/hguo1728/BayesianIDNT"><i class="fa-brands fa-github"></i>Code</a>
+            <a href="slides_poster/poster_2023_neurips.pdf"><i class="fa-solid fa-image"></i>Poster</a>
+          </div>
+        </li>
+
+      </ul>
+    </section>
+
+    <section id="talks">
+      <h2>Selected Talks</h2>
+      <ul class="archive">
+        <li class="archive__item">
+          <p class="archive__item-title">Learning with Noisy Labels: Variable Selection and Misclassification Probability Modeling</p>
+          <p class="archive__item-venue">Lightning talk for Dr. Raymond Carroll's visit, London, Canada, June 2025</p>
+          <div class="item-links">
+            <a href="slides_poster/slides_2025_raymond.pdf"><i class="fa-solid fa-person-chalkboard"></i>Slides</a>
+          </div>
+        </li>
+        <li class="archive__item">
+          <p class="archive__item-title">Case Study: Personalized Physician Recommendation for Critical Care Using the TreeSHAP Method</p>
+          <p class="archive__item-venue">Annual Meeting of the Statistical Society of Canada, Online, May 2022</p>
+          <div class="item-links">
+            <a href="slides_poster/poster_JDS.pdf"><i class="fa-solid fa-image"></i>Poster</a>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="beyond">
+      <h2>Beyond Research</h2>
+      <p>Outside of work, I enjoy photography (both digital 📷 and film 🎞️!).</p>
+      <details>
+        <summary>View photos</summary>
+        <div class="photo-grid">
+          <a href="photos_hobby/img1.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img1.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img2.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img2.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img3.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img3.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img4.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img4.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img5.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img5.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img6.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img6.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img7.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img7.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img9.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img9.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img11.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img11.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img12.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img12.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img13.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img13.JPG" alt="" loading="lazy" /></a>
+          <a href="photos_hobby/img14.JPG" class="glightbox" data-gallery="photos"><img src="photos_hobby/img14.JPG" alt="" loading="lazy" /></a>
+        </div>
+      </details>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        Email: <a href="mailto:hguo288@uwo.ca">hguo288@uwo.ca</a><br />
+        Office: Room 222, Middlesex College, Western University<br />
+        London, Ontario, Canada
+      </p>
+    </section>
+
+  </main>
 </div>
 
-<footer>
-  Last updated May 2026 &nbsp;·&nbsp; Built with plain HTML &amp; CSS
+<!-- ───────────── Footer ───────────── -->
+<footer class="page__footer">
+  <div>© 2026 Hui Guo. Last updated May 2026. Design inspired by <a href="https://github.com/academicpages/academicpages.github.io">AcademicPages</a>.</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 <script>
   GLightbox({ selector: '.glightbox' });
+
+  // Light / dark toggle (like the newer AcademicPages)
+  (function () {
+    var btn = document.getElementById('theme-toggle');
+    var icon = btn.querySelector('i');
+    function sync() {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      icon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+    btn.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+    sync();
+  })();
 </script>
 
 </body>
